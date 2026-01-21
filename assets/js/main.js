@@ -23,49 +23,49 @@
     "use strict";
 
 
-        ////////////////////////////////////////////////////
-        // 01. PreLoader Js
-        document.addEventListener("DOMContentLoaded", () => {
-            const svg = document.getElementById("preloaderSvg");
-            const svgText = document.querySelector("svg text");
-            const curve = "M0 502S175 272 500 272s500 230 500 230V0H0Z";
-            const flat = "M0 2S175 1 500 1s500 1 500 1V0H0Z";
-            tl.to(".preloader-heading .load-text, .preloader-heading .cont", {
-                delay: 1,
-                y: -80,
-                opacity: 0,
-                duration: 0.6
-            });
-            tl.to(svg, {
-                duration: 0.6,
-                attr: {
-                    d: curve
-                },
-                ease: "power2.inOut"
-            });
-            tl.to(svg, {
-                duration: 0.6,
-                attr: {
-                    d: flat
-                },
-                ease: "power2.inOut"
-            });
-            tl.to(".preloader", {
-                y: "-130%",
-                duration: 0.8,
-                ease: "power4.inOut"
-            });
-            tl.set(".preloader", {
-                display: "none",
-                zIndex: -1
-            });
+    ////////////////////////////////////////////////////
+    // 01. PreLoader Js
+    document.addEventListener("DOMContentLoaded", () => {
+        const svg = document.getElementById("preloaderSvg");
+        const svgText = document.querySelector("svg text");
+        const curve = "M0 502S175 272 500 272s500 230 500 230V0H0Z";
+        const flat = "M0 2S175 1 500 1s500 1 500 1V0H0Z";
+        tl.to(".preloader-heading .load-text, .preloader-heading .cont", {
+            delay: 1,
+            y: -80,
+            opacity: 0,
+            duration: 0.6
         });
+        tl.to(svg, {
+            duration: 0.6,
+            attr: {
+                d: curve
+            },
+            ease: "power2.inOut"
+        });
+        tl.to(svg, {
+            duration: 0.6,
+            attr: {
+                d: flat
+            },
+            ease: "power2.inOut"
+        });
+        tl.to(".preloader", {
+            y: "-130%",
+            duration: 0.8,
+            ease: "power4.inOut"
+        });
+        tl.set(".preloader", {
+            display: "none",
+            zIndex: -1
+        });
+    });
 
 
 
 
-	////////////////////////////////////////////////////
-	// 02. Sidebar Navmenu Js
+    ////////////////////////////////////////////////////
+    // 02. Sidebar Navmenu Js
     $(document).ready(function () {
         function toggleSubMenu() {
             if ($(".sidebar-navmenu").length) {
@@ -279,7 +279,7 @@
 
 
     ////////////////////////////////////////////////////
-	// 03. magnific Popupu Js
+    // 03. magnific Popupu Js
     $('.open-popup').magnificPopup({
         type: 'iframe',
         removalDelay: 300,
@@ -289,7 +289,7 @@
 
 
     ////////////////////////////////////////////////////
-	// 04. Add Attribute For Bg Image Js
+    // 04. Add Attribute For Bg Image Js
     $(".bg-img").each(function () {
         var img = $(this).data("background-image");
         if (img) {
@@ -299,7 +299,7 @@
 
 
     ////////////////////////////////////////////////////
-	// 05. about scroll rotate Js
+    // 05. about scroll rotate Js
     let reloadClassName = document.getElementById("reload");
     if (reloadClassName !== null) {
         window.onscroll = function () {
@@ -312,7 +312,7 @@
 
 
     ////////////////////////////////////////////////////
-	// 06. odometer counter Js
+    // 06. odometer counter Js
     if ($(".odometer").length > 0) {
         $(".odometer").waypoint(
             function () {
@@ -322,15 +322,15 @@
                     $(this).html(countNumber);
                 });
             }, {
-                offset: "80%",
-                triggerOnce: true,
-            }
+            offset: "80%",
+            triggerOnce: true,
+        }
         );
     }
 
 
     ////////////////////////////////////////////////////
-	// 07. Search Bar Js
+    // 07. Search Bar Js
     $(".open-search").on("click", function () {
         $(".search_popup").addClass("search-opened");
         $(".search-popup-overlay").addClass("search-popup-overlay-open");
@@ -347,7 +347,7 @@
 
 
     ////////////////////////////////////////////////////
-	// 08. Sticky Js
+    // 08. Sticky Js
     $(window).on("scroll", function () {
         if ($(window).scrollTop() >= 260) {
             $(".header").addClass("fixed-header");
@@ -358,7 +358,7 @@
 
 
     ////////////////////////////////////////////////////
-	// 09. Offcanvas Sidebar js
+    // 09. Offcanvas Sidebar js
     $(".tw-menu-bar").on("click", function () {
         $(".twoffcanvas").addClass("opened");
         $(".body-overlay").addClass("apply");
@@ -375,7 +375,7 @@
 
 
     ////////////////////////////////////////////////////
-	// 10. Floating Progress js
+    // 10. Floating Progress js
     const progressContainers = document.querySelectorAll('.progress-container');
     function setPercentage(progressContainer) {
         const percentage = progressContainer.getAttribute('data-percentage') + '%';
@@ -405,7 +405,7 @@
 
 
     ////////////////////////////////////////////////////
-	// 11. knob progress js
+    // 11. knob progress js
     if (typeof ($.fn.knob) !== 'undefined') {
         $('.knob').each(function () {
             var $this = $(this);
@@ -438,7 +438,7 @@
 
 
     ////////////////////////////////////////////////////
-	// 12. Pricing js
+    // 12. Pricing js
     function tabtable_active() {
         var e = document.getElementById("filt-monthly"),
             d = document.getElementById("filt-yearly"),
@@ -474,7 +474,7 @@
 
 
     ////////////////////////////////////////////////////
-	// 13. interactive gallery imgae change js
+    // 13. interactive gallery imgae change js
     $('.interactive-gallery-list-wrap .interactive-gallery-list-item').on("mouseenter", function () {
         $('#interactive-gallery-thumb').removeClass().addClass($(this).attr('rel'));
         $(this).addClass('active').siblings().removeClass('active');
@@ -485,7 +485,7 @@
 
 
     ////////////////////////////////////////////////////
-	// 14. Mouse Custom Cursor  js
+    // 14. Mouse Custom Cursor  js
     function itCursor() {
         var myCursor = jQuery(".mouseCursor");
         if (myCursor.length) {
@@ -504,14 +504,14 @@
                         (n = s.clientY),
                         (i = s.clientX);
                 }),
-                $("body").on("mouseenter", "button, a, .cursor-pointer", function () {
+                    $("body").on("mouseenter", "button, a, .cursor-pointer", function () {
                         e.classList.add("active"), t.classList.add("active");
                     }),
                     $("body").on("mouseleave", "button, a, .cursor-pointer", function () {
                         ($(this).is("a", "button") &&
                             $(this).closest(".cursor-pointer").length) ||
-                        (e.classList.remove("active"),
-                            t.classList.remove("active"));
+                            (e.classList.remove("active"),
+                                t.classList.remove("active"));
                     }),
                     (e.style.visibility = "visible"),
                     (t.style.visibility = "visible");
@@ -525,5 +525,13 @@
     $(".tw-cursor-point-area").on("mouseleave", function () {
         $(".mouseCursor").removeClass("cursor-big");
     });
+
+    /**
+     * Partners Carousel Script
+     * Handles marquee animation initialization
+     */
+
+
+
 
 })(jQuery);

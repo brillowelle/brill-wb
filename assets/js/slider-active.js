@@ -23,6 +23,57 @@
 
     ////////////////////////////////////////////////////
     // 01. Maquee Js
+    // Normal direction marquee
+    var swiperMarqueeNormal = new Swiper('.partners-swiper-normal', {
+        slidesPerView: "5",
+        spaceBetween: 25, // Reduced gap (4rem in CSS = 64px)
+        loop: true,
+        speed: 8000,
+        allowTouchMove: true, // Enable grab and slide
+        freeMode: true, // Momentum scrolling
+        autoplay: {
+            delay: 0,
+            disableOnInteraction: false,
+        },
+        breakpoints: {
+            320: {
+                spaceBetween: 30,
+            },
+            768: {
+                spaceBetween: 40,
+            },
+            992: {
+                spaceBetween: 25,
+            },
+        },
+    });
+
+    // Reverse direction marquee
+    var swiperMarqueeReverse = new Swiper('.partners-swiper-reverse', {
+        slidesPerView: "5",
+        spaceBetween: 25,
+        loop: true,
+        speed: 8000,
+        allowTouchMove: true, // Enable grab and slide
+        freeMode: true, // Momentum scrolling
+        autoplay: {
+            delay: 0,
+            disableOnInteraction: false,
+            reverseDirection: true, // Move right
+        },
+        breakpoints: {
+            320: {
+                spaceBetween: 30,
+            },
+            768: {
+                spaceBetween: 40,
+            },
+            992: {
+                spaceBetween: 25,
+            },
+        },
+    });
+
     var slider = new Swiper('.maquee-active', {
         slidesPerView: "auto",
         spaceBetween: 40,
@@ -91,7 +142,10 @@
         spaceBetween: 30,
         loop: true,
         speed: 2500,
-        autoplay: true,
+        autoplay: {
+            delay: 1000,
+            disableOnInteraction: false,
+        },
         centeredSlides: true,
         breakpoints: {
             '1600': {

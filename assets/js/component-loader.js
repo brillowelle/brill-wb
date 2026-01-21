@@ -25,14 +25,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Determine the base path based on current page location
     const pathArray = window.location.pathname.split('/');
     let basePath = '';
-    
+
     // Check if we're in a subdirectory (portfolio, services, etc.)
     const currentPath = window.location.pathname;
     if (currentPath.includes('/portfolio/') || currentPath.includes('/services/')) {
         basePath = '../';
     }
-    
+
     // Load components
     loadComponent('header-container', basePath + 'components/header.html');
-    loadComponent('footer-container', basePath + 'components/footer.html');
+    // loadComponent('footer-container', basePath + 'components/footer.html');
 });

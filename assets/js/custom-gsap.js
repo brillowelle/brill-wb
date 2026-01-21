@@ -29,6 +29,47 @@ var tl = gsap.timeline();
 gsap.registerPlugin(ScrollTrigger, SplitText);
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
+////////////////////////////////////////////////////
+// ScrollSmoother Initialization
+let smoother;
+(function initScrollSmoother() {
+    const container = document.querySelector("#scrollSmoother-container");
+    if (!container) return;
+
+    // Create proper wrapper/content structure for ScrollSmoother
+    // Wrap all content inside a new content div
+    const wrapper = document.createElement("div");
+    wrapper.id = "smooth-wrapper";
+    const content = document.createElement("div");
+    content.id = "smooth-content";
+
+    // Move container's children into content div
+    while (container.firstChild) {
+        content.appendChild(container.firstChild);
+    }
+
+    // Build new structure: container > wrapper > content
+    wrapper.appendChild(content);
+    container.appendChild(wrapper);
+
+    // Initialize ScrollSmoother with proper structure
+    smoother = ScrollSmoother.create({
+        wrapper: "#smooth-wrapper",
+        content: "#smooth-content",
+        smooth: 1.5,
+        effects: true,
+        smoothTouch: 0.1,
+        normalizeScroll: true,
+    });
+
+    // Refresh AOS to ensure it sees the new element positions after wrapping
+    if (typeof AOS !== 'undefined') {
+        AOS.refresh();
+        // Safety refresh for delayed rendering
+        setTimeout(() => AOS.refresh(), 500);
+    }
+})();
+
 
 ////////////////////////////////////////////////////
 // 01. Section title Animation Js
@@ -135,7 +176,7 @@ class Button {
             width,
             height
         } =
-        this.DOM.button.getBoundingClientRect();
+            this.DOM.button.getBoundingClientRect();
         const xTransformer = gsap.utils.pipe(
             gsap.utils.mapRange(0, width, 0, 100),
             gsap.utils.clamp(0, 100)
@@ -296,14 +337,14 @@ gsap.utils.toArray('.maquee-bg').forEach(container => {
 // 07. cta animation Js
 if ($('.cta-area').length > 0) {
     gsap.timeline({
-            scrollTrigger: {
-                trigger: '.cta-area',
-                start: 'top 100%',
-                end: 'bottom 20%',
-                scrub: true,
-                invalidateOnRefresh: true
-            }
-        })
+        scrollTrigger: {
+            trigger: '.cta-area',
+            start: 'top 100%',
+            end: 'bottom 20%',
+            scrub: true,
+            invalidateOnRefresh: true
+        }
+    })
         .to('.tw-cta-title-1', {
             x: '-15%'
         });
@@ -314,14 +355,14 @@ if ($('.cta-area').length > 0) {
 }
 if ($('.cta-area').length > 0) {
     gsap.timeline({
-            scrollTrigger: {
-                trigger: '.cta-area',
-                start: 'top 100%',
-                end: 'bottom 20%',
-                scrub: true,
-                invalidateOnRefresh: true
-            }
-        })
+        scrollTrigger: {
+            trigger: '.cta-area',
+            start: 'top 100%',
+            end: 'bottom 20%',
+            scrub: true,
+            invalidateOnRefresh: true
+        }
+    })
         .to('.tw-cta-title-2', {
             x: '10%'
         });
@@ -632,7 +673,7 @@ if (document.querySelector(".video-button")) {
         }
     });
     topToBottomTL.fromTo(".video-button", {
-        y: 0, 
+        y: 0,
         opacity: 0,
     }, {
         y: 170,
@@ -641,3 +682,205 @@ if (document.querySelector(".video-button")) {
     });
 }
 
+
+////////////////////////////////////////////////////
+// 20. Scroll Character Reveal Animation
+if ($('.scroll-reveal-text').length > 0) {
+    const giantTextElements = document.querySelectorAll('.scroll-reveal-text');
+
+    giantTextElements.forEach(giantText => {
+        // Use data-text for the source to allow special formatting delimiters like '|'
+        const sourceText = giantText.getAttribute('data-text') || giantText.innerText.trim();
+
+        // Find ALL gradient text ranges if any (optional feature from snippet)
+        const gradientSpans = giantText.querySelectorAll('.text-gradient');
+        const gradientIndices = new Set();
+
+        gradientSpans.forEach(span => {
+            const phrase = span.textContent.trim();
+            if (!phrase) return;
+
+            let startIndex = sourceText.indexOf(phrase);
+            while (startIndex !== -1) {
+                for (let k = 0; k < phrase.length; k++) {
+                    gradientIndices.add(startIndex + k);
+                }
+                startIndex = sourceText.indexOf(phrase, startIndex + 1);
+            }
+        });
+
+        // Clear and rebuild
+        giantText.innerHTML = '';
+
+        let charIndex = 0; // Track actual character index (skipping |)
+
+        for (let i = 0; i < sourceText.length; i++) {
+            const char = sourceText[i];
+
+            if (char === '|' || char === '\n') {
+                giantText.appendChild(document.createElement('br'));
+                continue;
+            }
+
+            const span = document.createElement('span');
+            span.className = 'giant-char';
+            span.dataset.original = char;
+            span.dataset.index = charIndex; // Use clean index
+
+            // Apply gradient class
+            if (gradientIndices.has(i)) {
+                span.classList.add('text-gradient-char');
+            }
+
+            if (char === ' ') {
+                // span.innerHTML = '&nbsp;';
+                span.style.opacity = '1';
+            } else {
+                span.textContent = char;
+                span.style.opacity = '0';
+                span.style.transform = 'translateY(30px)';
+                span.style.display = 'inline-block';
+                span.style.transition = 'none';
+            }
+
+            giantText.appendChild(span);
+            charIndex++;
+        }
+
+        const giantCharSpans = giantText.querySelectorAll('.giant-char');
+        const totalGiantChars = giantCharSpans.length;
+
+        function updateGiantReveal(progress) {
+            const charsToReveal = Math.floor(progress * totalGiantChars);
+
+            giantCharSpans.forEach((span, index) => {
+                const originalChar = span.dataset.original;
+
+                if (originalChar === ' ') {
+                    span.innerHTML = '&nbsp;';
+                    return;
+                }
+
+                if (index < charsToReveal) {
+                    span.style.opacity = '1';
+                    span.style.transform = 'translateY(0)';
+                    span.classList.add('revealed');
+                } else if (index < charsToReveal + 5) {
+                    // Characters about to reveal - partial opacity
+                    const partialProgress = (charsToReveal + 5 - index) / 5;
+                    span.style.opacity = String(partialProgress * 0.5);
+                    span.style.transform = `translateY(${(1 - partialProgress) * 20}px)`;
+                } else {
+                    span.style.opacity = '0';
+                    span.style.transform = 'translateY(30px)';
+                    span.classList.remove('revealed');
+                }
+            });
+        }
+
+        updateGiantReveal(0);
+
+        // Scroll-triggered character reveal
+        ScrollTrigger.create({
+            trigger: giantText,
+            start: 'top 85%',
+            end: 'bottom 60%', // Adjusted for better viewing
+            scrub: 1, // Smoother scrub
+            onUpdate: (self) => {
+                updateGiantReveal(self.progress);
+            },
+            onLeave: () => {
+                updateGiantReveal(1);
+            }
+        });
+    });
+}
+
+
+////////////////////////////////////////////////////
+// 21. Faded Scroll Reveal Animation (Opacity 0.3 -> 1)
+if ($('.faded-reveal-text').length > 0) {
+    let fadedTexts = gsap.utils.toArray(".faded-reveal-text");
+    fadedTexts.forEach(text => {
+        let splitText = new SplitText(text, { type: "chars, words" }); // Split words too to keep spacing
+
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: text,
+                start: "top 90%",
+                end: "bottom 60%",
+                scrub: 1, // Smoothly animate with scroll
+                markers: false
+            }
+        });
+
+        // Set initial state (faded)
+        gsap.set(splitText.chars, { opacity: 0.2 });
+
+        // Animate to visible state
+        tl.to(splitText.chars, {
+            opacity: 1,
+            stagger: 0.1,
+            ease: "none"
+        });
+    });
+}
+
+////////////////////////////////////////////////////
+// 22. Portfolio Reveal & Scale Animation
+if ($('.portfolio-animation-wrapper').length > 0) {
+    let portfolioWrapper = document.querySelector('.portfolio-animation-wrapper');
+    let subtitle = portfolioWrapper.querySelector('.portfolio-top-subtitle');
+    let title = portfolioWrapper.querySelector('.portfolio-top-title');
+
+    // Split text into characters
+    let splitSubtitle = new SplitText(subtitle, { type: "chars, words" });
+    let splitTitle = new SplitText(title, { type: "chars" });
+
+    let tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: portfolioWrapper,
+            start: "center center", // Pin when center of element hits center of viewport
+            end: "+=1500", // Duration of pin
+            pin: true,
+            scrub: 1,
+            markers: false
+        }
+    });
+
+    // Initial State: Hidden chars
+    gsap.set([splitSubtitle.chars, splitTitle.chars], { opacity: 0, y: 50 });
+
+    // Step 1: Reveal Subtitle
+    tl.to(splitSubtitle.chars, {
+        opacity: 1,
+        y: 0,
+        stagger: 0.05,
+        duration: 2,
+        ease: "power2.out"
+    });
+
+    // Step 2: Reveal Title
+    tl.to(splitTitle.chars, {
+        opacity: 1,
+        y: 0,
+        stagger: 0.05,
+        duration: 3,
+        ease: "back.out(1.7)"
+    }, "-=1.5"); // Overlap slightly
+
+    // Step 3: Scale Up Container
+    tl.to(portfolioWrapper, {
+        scale: 1.5,
+        duration: 3,
+        ease: "power1.inOut"
+    });
+
+    // Step 4: Fade out slightly before unpinning (optional smoothing)
+    tl.to(portfolioWrapper, {
+        opacity: 0,
+        scale: 2, // Continue scaling out
+        duration: 2,
+        ease: "power1.in"
+    });
+}
