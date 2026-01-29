@@ -15198,3 +15198,56 @@ textarea.form-input-minimal {
     transform: rotate(-45deg); /* Optional effect */
 }
 
+
+
+/* ============================================
+   Mobile Responsiveness Fixes (< 768px)
+   ============================================ */
+@media (max-width: 767.98px) {
+    /* Banner Title */
+    .banner-title {
+        font-size: 3rem !important;
+    }
+    
+    /* Large Section Titles */
+    .tw-text-29 { font-size: 2rem !important; }
+    .tw-text-47 { font-size: 1.75rem !important; }
+    .tw-text-83 { font-size: 2.5rem !important; }
+    .section-two-title { font-size: 1.5rem !important; }
+    
+    /* Fixed Width Overrides */
+    .tw-w-330-px,
+    .tw-w-232-px { width: 100% !important; max-width: 100% !important; }
+    
+    /* Margin Overrides */
+    .tw-ms-17, .tw-ms-20, .tw-ms-10, .tw-me-10 { 
+        margin-left: 0 !important; 
+        margin-right: 0 !important; 
+    }
+    
+    /* About Section Circles */
+    .tw-w-140 { width: 80px !important; height: 80px !important; }
+    
+    /* Footer Column Fixes */
+    .footer-five-col-4 { margin-left: 0 !important; }
+    
+    /* Contact Form - Full Width on Mobile */
+    .contact-area .col-xl-6.col-lg-6 { 
+        flex: 0 0 100% !important; 
+        max-width: 100% !important; 
+    }
+    
+    /* CTA Section */
+    .tw-cta-title-1, .tw-cta-title-2 { font-size: 2rem !important; }
+    
+    /* Portfolio Sticky Section */
+    .project-two-sticky { position: relative !important; }
+    
+    /* Service Section Tags */
+    .service-two-tag { font-size: 1.25rem !important; }
+    
+    /* Testimonial Cards */
+    .testimonial-glass-card { padding: 8px !important; }
+    .testimonial-glass-inner { padding: 16px !important; }
+}
+
